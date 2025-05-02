@@ -1,9 +1,18 @@
-﻿namespace BudgetController.Models;
+﻿using BudgetController.Models.Interfaces;
 
-public class Expense
+namespace BudgetController.Models;
+
+public class Expense : IModel
 {
-    public int Id { get; }
-    public string Description { get; set; }
+    public Expense(string description, double value, DateOnly date)
+    {
+        Description = description;
+        Value = value;
+        Date = date;
+    }
+
+    public int Id { get; set; }
+    public string? Description { get; set; }
     public double Value { get; set; }
     public DateOnly Date { get; set; }
 }

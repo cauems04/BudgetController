@@ -1,6 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using BudgetController.Data;
 using BudgetController.Models;
+using BudgetController.Tranformers;
+using BudgetController.DTO.Responses;
+using BudgetController.DTO.Requests;
+using BudgetController.DTO.Interfaces;
 
 
 namespace BudgetController.Controllers;
@@ -16,16 +20,18 @@ public class ExpenseController : ControllerBase
     }
 
     [HttpGet("expenses")]
-    public IActionResult GetExpenses()
+    public IActionResult GetAll()
     {
-        List<Expense>? expenses = _dal.ListAll().ToList();
+        List<Expense>? expensesFound = _dal.ListAll().ToList();
 
-        if (expenses == null)
+        if (expensesFound == null)
         {
             return NotFound();
         }
 
-        return Ok(expenses);
+        List<IResponse> expenseList = expensesFound.Select(e => ExpenseTransformer.ModelToResponse(e)).ToList();
+
+        return Ok(expenseList);
     }
 
     [HttpGet("expenses/{id}")]
@@ -38,27 +44,23 @@ public class ExpenseController : ControllerBase
             return NotFound();
         }
 
-        return Ok(expenseFound);
+        IResponse expense = ExpenseTransformer.ModelToResponse(expenseFound);
+
+        return Ok(expense);
     }
 
     [HttpPost("expenses")]
-    public IActionResult Create([FromBody] Expense expenseItem)
+    public IActionResult Create([FromBody] ExpenseRequest expenseRequest)
     {
+        Expense expenseItem = ExpenseTransformer.RequestToModel(expenseRequest);
+
         _dal.Create(expenseItem);
-
-        //Tentar implementar essa verificação - obs:incomeItem não tem Id definido
-        //Income? incomeFound = _dal.SearchFor(x => x.Id == incomeItem.Id);
-
-        //if (incomeFound == null)
-        //{
-        //    return NotFound();
-        //}
 
         return Ok();
     }
 
     [HttpPut("expenses/{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] Expense expenseItem)
+    public IActionResult Update([FromRoute] int id, [FromBody] ExpenseRequest expenseRequest)
     {
         Expense? expenseFound = _dal.SearchFor(e => e.Id == id);
 
@@ -67,9 +69,9 @@ public class ExpenseController : ControllerBase
             return NotFound();
         }
 
-        expenseFound.Description = expenseItem.Description;
-        expenseFound.Value = expenseItem.Value;
-        expenseFound.Date = expenseItem.Date;
+        expenseFound.Description = expenseRequest.Description;
+        expenseFound.Value = expenseRequest.Value;
+        expenseFound.Date = expenseRequest.Date;
 
         _dal.Update(expenseFound);
 

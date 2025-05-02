@@ -173,3 +173,4 @@ D:\Documentos\Visual Studio 2022\projects\BudgetController\BudgetController\bin\
 D:\Documentos\Visual Studio 2022\projects\BudgetController\BudgetController\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 D:\Documentos\Visual Studio 2022\projects\BudgetController\BudgetController\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 D:\Documentos\Visual Studio 2022\projects\BudgetController\BudgetController\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+D:\Documentos\Visual Studio 2022\projects\BudgetController\BudgetController\obj\Debug\net9.0\BudgetController.sourcelink.json

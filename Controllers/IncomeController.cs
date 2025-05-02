@@ -1,6 +1,10 @@
-﻿using BudgetController.Data;
+﻿using Microsoft.AspNetCore.Mvc;
+using BudgetController.Data;
 using BudgetController.Models;
-using Microsoft.AspNetCore.Mvc;
+using BudgetController.Tranformers;
+using BudgetController.DTO.Responses;
+using BudgetController.DTO.Requests;
+using BudgetController.DTO.Interfaces;
 
 namespace BudgetController.Controllers;
 
@@ -16,16 +20,18 @@ public class IncomeController : ControllerBase
     }
 
     [HttpGet("incomes")]
-    public IActionResult GetIncomes()
+    public IActionResult GetAll()
     {
-        List<Income>? incomes = _dal.ListAll().ToList();
+        List<Income>? incomesFound = _dal.ListAll().ToList();
         
-        if (incomes == null)
+        if (incomesFound == null)
         {
             return NotFound();
         }
 
-        return Ok(incomes);
+        List<IResponse> incomeList = incomesFound.Select(i => IncomeTransformer.ModelToResponse(i)).ToList();
+
+        return Ok(incomeList);
     }
 
     [HttpGet("incomes/{id}")]
@@ -40,12 +46,17 @@ public class IncomeController : ControllerBase
             return NotFound();
         }
 
-        return Ok(incomeFound);
+        IResponse income = IncomeTransformer.ModelToResponse(incomeFound);
+
+        return Ok(income);
     }
 
     [HttpPost("incomes")]
-    public IActionResult Create([FromBody] Income incomeItem)
+    public IActionResult Create([FromBody] IncomeRequest incomeRequest)
     {
+
+        Income incomeItem = IncomeTransformer.RequestToModel(incomeRequest);
+
         _dal.Create(incomeItem);
 
         //Tentar implementar essa verificação - obs:incomeItem não tem Id definido
@@ -60,18 +71,18 @@ public class IncomeController : ControllerBase
     }
 
     [HttpPut("incomes/{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] Income incomeItem)
+    public IActionResult Update([FromRoute] int id, [FromBody] IncomeRequest incomeRequest)
     {
         Income? incomeFound = _dal.SearchFor(i => i.Id == id);
 
         if (incomeFound == null)
         {
             return NotFound();
-        }
+        }    
 
-        incomeFound.Description = incomeItem.Description;
-        incomeFound.Value = incomeItem.Value;
-        incomeFound.Date = incomeItem.Date;
+        incomeFound.Description = incomeRequest.Description;
+        incomeFound.Value = incomeRequest.Value;
+        incomeFound.Date = incomeRequest.Date;
 
         _dal.Update(incomeFound);
 

@@ -24,17 +24,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Expense"
+                "$ref": "#/components/schemas/ExpenseRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Expense"
+                "$ref": "#/components/schemas/ExpenseRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Expense"
+                "$ref": "#/components/schemas/ExpenseRequest"
               }
             }
           }
@@ -87,17 +87,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Expense"
+                "$ref": "#/components/schemas/ExpenseRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Expense"
+                "$ref": "#/components/schemas/ExpenseRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Expense"
+                "$ref": "#/components/schemas/ExpenseRequest"
               }
             }
           }
@@ -149,17 +149,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Income"
+                "$ref": "#/components/schemas/IncomeRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Income"
+                "$ref": "#/components/schemas/IncomeRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Income"
+                "$ref": "#/components/schemas/IncomeRequest"
               }
             }
           }
@@ -212,17 +212,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Income"
+                "$ref": "#/components/schemas/IncomeRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/Income"
+                "$ref": "#/components/schemas/IncomeRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/Income"
+                "$ref": "#/components/schemas/IncomeRequest"
               }
             }
           }
@@ -258,14 +258,9 @@
   },
   "components": {
     "schemas": {
-      "Expense": {
+      "ExpenseRequest": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
           "description": {
             "type": "string",
             "nullable": true
@@ -281,14 +276,9 @@
         },
         "additionalProperties": false
       },
-      "Income": {
+      "IncomeRequest": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
           "description": {
             "type": "string",
             "nullable": true
